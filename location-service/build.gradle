@@ -1,3 +1,5 @@
+version = '0.0.1'
+
 configurations {
     mockitoAgent
 }
@@ -20,4 +22,15 @@ dependencies {
 
 tasks.test {
     jvmArgs += "-javaagent:${configurations.mockitoAgent.asPath}"
+}
+
+// Capture version as a plain String before the jib {} closure —
+// referencing project.version inside the closure would capture the
+// Project object and break Gradle's configuration cache.
+def serviceVersion = version as String
+
+jib {
+    to {
+        tags = [serviceVersion]
+    }
 }
