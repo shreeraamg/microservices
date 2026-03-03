@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: product-service-pod
+spec:
+  imagePullSecrets:
+    - name: ghcr-secret
+  containers:
+    - name: product-service
+      image: ghcr.io/shreeraamg/microservices/product-service:0.0.1
+      ports:
+        - containerPort: 8082
+      env:
+        - name: SPRING_DATA_MONGODB_URI
+          value: mongodb+srv://appuser:klnqWsJyhHthhoB8@nonprod-cluster.szkwqkw.mongodb.net/microservices

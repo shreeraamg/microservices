@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: product-service
+          image: ghcr.io/shreeraamg/microservices/product-service:0.0.2
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: mongodb+srv://appuser:klnqWsJyhHthhoB8@nonprod-cluster.szkwqkw.mongodb.net/microservices
