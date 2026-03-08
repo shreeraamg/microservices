@@ -17,7 +17,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: price-service
-          image: ghcr.io/shreeraamg/microservices/price-service:0.0.2
+          image: ghcr.io/shreeraamg/microservices/price-service:0.0.3
           ports:
             - containerPort: 8080
           envFrom:
@@ -29,3 +29,19 @@ spec:
                 secretKeyRef:
                   name: application-secrets
                   key: mongodb-uri
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3

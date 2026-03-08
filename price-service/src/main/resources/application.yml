@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: price-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/microservices
+
+app:
+  price:
+    supported-currencies: USD,EUR,GBP,INR
+    max-results: 200
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

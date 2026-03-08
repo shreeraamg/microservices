@@ -1,0 +1,29 @@
+server:
+  port: 8070
+
+spring:
+  application:
+    name: location-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/microservices
+
+app:
+  location:
+    max-results: 100
+    coordinates-required: false
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

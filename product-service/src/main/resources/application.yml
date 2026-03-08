@@ -1,0 +1,29 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: product-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/microservices
+
+app:
+  product:
+    max-results: 50
+    enforce-unique-sku: true
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
