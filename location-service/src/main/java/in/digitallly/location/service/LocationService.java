@@ -1,11 +1,15 @@
 package in.digitallly.location.service;
 
+import in.digitallly.location.config.LocationProperties;
 import in.digitallly.location.domain.dto.LocationRequest;
 import in.digitallly.location.domain.dto.LocationResponse;
 import in.digitallly.location.domain.persistence.Location;
 import in.digitallly.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +19,12 @@ import java.util.Optional;
 public class LocationService {
 
     private final LocationRepository locationRepository;
+    private final LocationProperties properties;
 
     public List<LocationResponse> findAll() {
-        return locationRepository.findAll().stream()
+        return locationRepository.findAll(PageRequest.of(0, properties.getMaxResults()))
                 .map(this::toResponse)
-                .toList();
+                .getContent();
     }
 
     public Optional<LocationResponse> findById(String id) {
@@ -39,6 +44,12 @@ public class LocationService {
     }
 
     public LocationResponse create(LocationRequest request) {
+        if (properties.isCoordinatesRequired()
+                && (request.getLatitude() == null || request.getLongitude() == null)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Latitude and longitude are required");
+        }
         return toResponse(locationRepository.save(toEntity(request)));
     }
 

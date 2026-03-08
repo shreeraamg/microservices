@@ -1,11 +1,15 @@
 package in.digitallly.product.service;
 
+import in.digitallly.product.config.ProductProperties;
 import in.digitallly.product.domain.dto.ProductRequest;
 import in.digitallly.product.domain.dto.ProductResponse;
 import in.digitallly.product.domain.persistence.Product;
 import in.digitallly.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +19,12 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductProperties properties;
 
     public List<ProductResponse> findAll() {
-        return productRepository.findAll().stream()
+        return productRepository.findAll(PageRequest.of(0, properties.getMaxResults()))
                 .map(this::toResponse)
-                .toList();
+                .getContent();
     }
 
     public Optional<ProductResponse> findById(String id) {
@@ -37,6 +42,12 @@ public class ProductService {
     }
 
     public ProductResponse create(ProductRequest request) {
+        if (properties.isEnforceUniqueSku()
+                && productRepository.findBySku(request.getSku()).isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "A product with SKU '" + request.getSku() + "' already exists");
+        }
         return toResponse(productRepository.save(toEntity(request)));
     }
 
