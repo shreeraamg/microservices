@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-service-config
+  namespace: stage
+data:
+  SPRING_APPLICATION_NAME: "product-service"
+  SERVER_PORT: "8090"
+  APP_PRODUCT_MAX_RESULTS: "50"
+  APP_PRODUCT_ENFORCE_UNIQUE_SKU: "true"

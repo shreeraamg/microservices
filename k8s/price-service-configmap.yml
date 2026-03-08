@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: price-service-config
+  namespace: stage
+data:
+  SPRING_APPLICATION_NAME: "price-service"
+  SERVER_PORT: "8080"
+  APP_PRICE_SUPPORTED_CURRENCIES: "USD,EUR,GBP,INR"
+  APP_PRICE_MAX_RESULTS: "200"

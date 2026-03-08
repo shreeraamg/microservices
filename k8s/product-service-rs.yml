@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: product-service-deployment
+  name: product-service-replicaset
 spec:
   replicas: 2
   selector:

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: location-service-config
+  namespace: stage
+data:
+  SPRING_APPLICATION_NAME: "location-service"
+  SERVER_PORT: "8070"
+  APP_LOCATION_MAX_RESULTS: "100"
+  APP_LOCATION_COORDINATES_REQUIRED: "false"

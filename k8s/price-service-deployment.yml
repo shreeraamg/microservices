@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product-service-deployment
+  name: price-service-deployment
   namespace: stage
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: product-service
+      app: price-service
   template:
     metadata:
       labels:
-        app: product-service
+        app: price-service
     spec:
       imagePullSecrets:
         - name: ghcr-secret
       containers:
-        - name: product-service
-          image: ghcr.io/shreeraamg/microservices/product-service:0.0.2
+        - name: price-service
+          image: ghcr.io/shreeraamg/microservices/price-service:0.0.2
           ports:
-            - containerPort: 8090
+            - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: product-service-config
+                name: price-service-config
           env:
             - name: SPRING_DATA_MONGODB_URI
               valueFrom:
